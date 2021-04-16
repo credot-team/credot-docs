@@ -2,6 +2,11 @@ module.exports = {
   docs: [
     {
       type: 'category',
+      label: '介紹',
+      items: ['intro-1'],
+    },
+    {
+      type: 'category',
       label: 'Docusaurus Tutorial',
       items: [
         'getting-started',
