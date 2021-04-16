@@ -23,6 +23,9 @@ module.exports = {
           label: '文件',
           position: 'left',
         },
+        { to: 'flow', label: '專案流程', position: 'left' },
+        { to: 'templates', label: '專案範例', position: 'left' },
+        { to: 'conference', label: '線上會議', position: 'left' },
         { to: 'blog', label: '部落格', position: 'left' },
         {
           href: 'https://github.com/haneyume',
@@ -74,7 +77,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} CreDot Docs, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} CreDot, Inc.`,
     },
   },
   presets: [
@@ -83,13 +86,11 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
           editUrl:
             'https://github.com/facebook/docusaurus/edit/master/website/',
         },
         blog: {
           showReadingTime: true,
-          // Please change this to your repo.
           editUrl:
             'https://github.com/facebook/docusaurus/edit/master/website/blog/',
         },
