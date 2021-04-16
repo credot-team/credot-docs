@@ -25,7 +25,6 @@ module.exports = {
         },
         { to: 'flow', label: '專案流程', position: 'left' },
         { to: 'templates', label: '專案範例', position: 'left' },
-        { to: 'conference', label: '線上會議', position: 'left' },
         { to: 'blog', label: '部落格', position: 'left' },
         {
           href: 'https://github.com/haneyume',

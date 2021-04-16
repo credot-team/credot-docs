@@ -3,7 +3,7 @@ module.exports = {
     {
       type: 'category',
       label: '開始',
-      collapsed: false,
+
       items: [
         'getting-started/intro',
         'getting-started/create-react-project',
@@ -17,13 +17,13 @@ module.exports = {
     {
       type: 'category',
       label: '設定檔',
-      collapsed: false,
+
       items: ['config/husky', 'config/prettier', 'config/typescript'],
     },
     {
       type: 'category',
       label: '常用函式庫與框架',
-      collapsed: false,
+
       items: [
         'using-libs/firebase',
         'using-libs/firebase-auth',
@@ -38,7 +38,7 @@ module.exports = {
     {
       type: 'category',
       label: '進階主題',
-      collapsed: false,
+
       items: [
         'advanced/neo4j',
         'advanced/tensorflow',
