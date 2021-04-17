@@ -1,16 +1,14 @@
 ---
-title: 建立 React 專案
+title: 使用 Create React App 建立專案
 ---
 
-## 建立專案
-
-### 建立 javascript 專案
+## 建立 javascript 專案
 
 ```sh
 npx create-react-app my-app
 ```
 
-### 建立 typescript 專案
+## 建立 typescript 專案
 
 ```sh
 npx create-react-app my-app --template typescript
@@ -20,7 +18,7 @@ npx create-react-app my-app --template typescript
 
 ```sh
 cd my-app
-npm start
+yarn start
 ```
 
 ## 可用指令

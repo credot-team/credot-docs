@@ -18,14 +18,27 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/',
-          activeBasePath: 'docs',
+          type: 'doc',
           label: '文件',
           position: 'left',
+          docId: 'getting-started/intro',
         },
-        { to: 'flow', label: '專案流程', position: 'left' },
-        { to: 'templates', label: '專案範例', position: 'left' },
-        { to: 'blog', label: '部落格', position: 'left' },
+        {
+          type: 'doc',
+          label: '專案範例',
+          position: 'left',
+          docId: 'templates/intro',
+        },
+        {
+          to: 'flow',
+          label: '專案流程',
+          position: 'left',
+        },
+        // {
+        //   to: 'blog',
+        //   label: '部落格',
+        //   position: 'left',
+        // },
         {
           href: 'https://github.com/haneyume',
           label: 'GitHub',
@@ -89,6 +102,7 @@ module.exports = {
             'https://github.com/facebook/docusaurus/edit/master/website/',
         },
         blog: {
+          blogSidebarTitle: '最近文章',
           showReadingTime: true,
           editUrl:
             'https://github.com/facebook/docusaurus/edit/master/website/blog/',

@@ -1,0 +1,44 @@
+---
+title: 環境設定
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## 安裝 Node.js
+
+<Tabs
+  defaultValue="macOS"
+  values={[
+    { label: 'macOS', value: 'macOS' },
+    { label: 'Windows', value: 'Windows' },
+    
+  ]}
+>
+  <TabItem value="macOS">
+
+若尚未安裝 Homebrew，先輸入下列指令
+
+```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+使用 Homebrew 安裝 Node.js
+
+```sh
+brew install node
+```
+
+  </TabItem>
+  <TabItem value="Windows">
+
+可直接從 [Node.js](https://nodejs.org/en/) 官網下載安裝
+
+  </TabItem>
+</Tabs>
+
+## 安裝 Yarn
+
+```sh
+npm i -g yarn
+```
