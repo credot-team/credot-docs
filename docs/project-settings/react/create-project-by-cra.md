@@ -1,5 +1,6 @@
 ---
 title: 使用 Create React App 建立專案
+sidebar_position: 2
 ---
 
 ## 建立 javascript 專案

@@ -1,5 +1,6 @@
 ---
 title: 使用 CDN 建立專案
+sidebar_position: 4
 ---
 
 :::danger 注意

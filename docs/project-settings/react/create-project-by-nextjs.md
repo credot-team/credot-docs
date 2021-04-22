@@ -1,5 +1,6 @@
 ---
 title: 使用 Next.js 建立專案
+sidebar_position: 3
 ---
 
 ## 建立專案
