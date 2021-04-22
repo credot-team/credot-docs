@@ -17,6 +17,9 @@ export default () => {
       { id: '徵才平台', label: '徵才平台', color: '#34D399' },
       { id: 'ERP', label: 'ERP', color: '#34D399' },
       { id: '智慧家電', label: '智慧家電', color: '#34D399' },
+      { id: '募資平台', label: '募資平台', color: '#34D399' },
+      { id: '語言交換', label: '語言交換', color: '#34D399' },
+      { id: '訂房平台', label: '訂房平台', color: '#34D399' },
 
       { id: '訊息', label: '訊息', color: '#FCD34D' },
       { id: '地圖', label: '地圖', color: '#FCD34D' },
@@ -25,10 +28,13 @@ export default () => {
       { id: 'AR', label: 'AR', color: '#FCD34D' },
       { id: 'VR', label: 'VR', color: '#FCD34D' },
       { id: 'IoT', label: 'IoT', color: '#FCD34D' },
+      { id: '機器人', label: '機器人', color: '#FCD34D' },
 
       { id: 'Facebook', label: 'Facebook', color: '#60A5FA' },
       { id: 'Instagram', label: 'Instagram', color: '#60A5FA' },
       { id: 'DCard', label: 'DCard', color: '#60A5FA' },
+      { id: 'Hahow', label: 'Hahow', color: '#60A5FA' },
+      { id: 'Yourator', label: 'Yourator', color: '#60A5FA' },
     ],
     edges: [
       //
@@ -39,12 +45,17 @@ export default () => {
       { from: '新產品', to: '徵才平台' },
       { from: '新產品', to: 'ERP' },
       { from: '新產品', to: '智慧家電' },
+      { from: '新產品', to: '募資平台' },
+      { from: '新產品', to: '語言交換' },
+      { from: '新產品', to: '訂房平台' },
       //
       { from: '社群', to: 'Facebook' },
       { from: '電商', to: 'Facebook' },
       { from: '社群', to: 'Instagram' },
       { from: '電商', to: 'Instagram' },
-      { from: '社群', to: 'DCard' },
+      { from: '社群平台', to: 'DCard' },
+      { from: '課程平台', to: 'Hahow' },
+      { from: '徵才平台', to: 'Yourator' },
       //
       { from: '訊息', to: 'Facebook' },
       { from: '地圖', to: 'Facebook' },

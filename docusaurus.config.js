@@ -97,14 +97,12 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/',
+          editUrl: 'https://github.com/haneyume/credot-docs/tree/main',
         },
         blog: {
           blogSidebarTitle: '最近文章',
           showReadingTime: true,
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
+          editUrl: 'https://github.com/haneyume/credot-docs/tree/main',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
