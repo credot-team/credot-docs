@@ -3,7 +3,7 @@ module.exports = {
   title: 'CreDot 文件',
   tagline: '收集 CreDot 的文件與專案範例',
   url: 'https://skynocover.github.io',
-  baseUrl: '/',
+  baseUrl: '/credot-docs/',
   organizationName: 'skynocover',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
