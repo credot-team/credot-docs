@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>CreDot 文件 Blog</title>
+        <link>https://skynocover.github.io/blog</link>
+        <description>CreDot 文件 Blog</description>
+        <lastBuildDate>Fri, 16 Apr 2021 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <item>
+            <title><![CDATA[文件上線啦]]></title>
+            <link>https://skynocover.github.io/credot-docs/blog/2021/04/16/文件上線啦</link>
+            <guid>文件上線啦</guid>
+            <pubDate>Fri, 16 Apr 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[這裡將會存放我們的技術文件與專案範例!!]]></description>
+        </item>
+    </channel>
+</rss>

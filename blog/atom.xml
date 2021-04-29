@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://skynocover.github.io/blog</id>
+    <title>CreDot 文件 Blog</title>
+    <updated>2021-04-16T00:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://skynocover.github.io/blog"/>
+    <subtitle>CreDot 文件 Blog</subtitle>
+    <icon>https://skynocover.github.io/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[文件上線啦]]></title>
+        <id>文件上線啦</id>
+        <link href="https://skynocover.github.io/credot-docs/blog/2021/04/16/文件上線啦"/>
+        <updated>2021-04-16T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[這裡將會存放我們的技術文件與專案範例!!]]></summary>
+    </entry>
+</feed>
