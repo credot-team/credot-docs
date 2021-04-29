@@ -40,6 +40,8 @@ jobs:
         env:
           USE_SSH: true
           GIT_USER: git
+          BRANCH: gh-pages
+          FOLDER: build
         run: |
           git config --global user.email "skynocover@github.com"
           git config --global user.name "skynocover"
