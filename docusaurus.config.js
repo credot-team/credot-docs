@@ -8,7 +8,7 @@ module.exports = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'credot', // Usually your GitHub org/user name.
+  //organizationName: 'credot', // Usually your GitHub org/user name.
   projectName: 'credot-docs', // Usually your repo name.
   themeConfig: {
     navbar: {
