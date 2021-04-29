@@ -4,11 +4,10 @@ module.exports = {
   tagline: '收集 CreDot 的文件與專案範例',
   url: 'https://skynocover.github.io',
   baseUrl: '/credot-docs/',
-  organizationName: 'skynocover',
+  organizationName: 'skynocover', // Usually your GitHub org/user name.
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  //organizationName: 'credot', // Usually your GitHub org/user name.
   projectName: 'credot-docs', // Usually your repo name.
   themeConfig: {
     navbar: {
