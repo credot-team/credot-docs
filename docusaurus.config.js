@@ -2,8 +2,9 @@
 module.exports = {
   title: 'CreDot 文件',
   tagline: '收集 CreDot 的文件與專案範例',
-  url: 'https://haneyume.github.io',
+  url: 'https://skynocover.github.io',
   baseUrl: '/',
+  organizationName: 'skynocover',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
