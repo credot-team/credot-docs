@@ -97,12 +97,14 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/haneyume/credot-docs/tree/main',
+          editUrl:
+            'https://github.com/skynocover/credot-docs/tree/documentation',
         },
         blog: {
           blogSidebarTitle: '最近文章',
           showReadingTime: true,
-          editUrl: 'https://github.com/haneyume/credot-docs/tree/main',
+          editUrl:
+            'https://github.com/skynocover/credot-docs/tree/documentation',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
