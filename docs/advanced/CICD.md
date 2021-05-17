@@ -7,13 +7,15 @@ title: CICD
 
 > https://dashboard.ngrok.com
 
+> [ubuntu intall link](https://snapcraft.io/install/ngrok/ubuntu)
+
 ### intall
 
 ```
 sudo snap install ngrok
 ```
 
-[intall link](https://snapcraft.io/install/ngrok/ubuntu)
+
 
 ### forwarding
 
@@ -34,10 +36,9 @@ Connections                   ttl     opn     rt1     rt5     p50     p90
                               0       0       0.00    0.00    0.00    0.00
 ```
 
-!!!!!!! http://f8aeb89577fa.ngrok.io 
-!!!!!!! bed9f27c2232d1eb26e02750334d61550aef6cb9
-
 ### connect
+
+- authtoken: 註冊的ngrok的帳號頒發的token
 
 ```
 ngrok authtoken 1ndC6jZveOOtfz0TzEFFdiNBuzM_EuRAumdYrAt117huUoFr
@@ -48,8 +49,8 @@ ngrok authtoken 1ndC6jZveOOtfz0TzEFFdiNBuzM_EuRAumdYrAt117huUoFr
 ### 建立新的 OAuth
 
 - [前往並建立](https://github.com/settings/applications/new)
-- Homepage URL http://524c5b23a4f8.ngrok.io
-- Authorization callback URL http://524c5b23a4f8.ngrok.io/login
+- Homepage URL http://524c5b23a4f8.ngrok.io (ngrok產生的)
+- Authorization callback URL http://524c5b23a4f8.ngrok.io/login (ngrok產生的)
 - 產生 Client secrets 並記錄
 - 紀錄 Client ID
 
@@ -152,11 +153,14 @@ steps: #工作列表
       registry: registry.hub.docker.com #dockerhub registry url
       repo: registry.hub.docker.com/skynocover/amber-server #打包完要上傳的docker repo名稱
       dockerfile: dockerfile #根據指定的Docker file打包image
-      auto_tag: true #自動下tag
+      #auto_tag: true #自動下tag
       username:
         from_secret: hubname
       password:
         from_secret: hubsecret
+      tags:
+        - latest
+        - ${DRONE_TAG}
 ```
 
 ### dockerfile
@@ -173,6 +177,113 @@ CMD ["node","-r","dotenv/config","/src/index.min.js"]
 ### 對commit下tag
 
 - 格式 vX.X.X
+
+## ubuntu service部署
+
+> 自動部署
+
+### service
+
+> sudo vim /etc/systemd/system/projectName.service
+
+- projectName: amber
+
+```
+[Unit]
+Description=projectName Container
+Requires=docker.service
+After=docker.service
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker run --name=projectName -p 3000:3000 stu60610/projectName
+ExecStop=/usr/bin/docker stop -t 2 projectName
+ExecStopPost=/usr/bin/docker rm -f projectName
+[Install]
+WantedBy=default.target
+```
+
+> systemctl daemon-reload
+
+> systemctl enable projectName.service
+
+### script
+
+> vim deploy.sh
+
+```sh
+#!/bin/bash
+echo “Updating staging Server”
+echo “stopping projectName.service”
+sudo systemctl stop projectName.service
+# remove all outdated images and containers
+echo “removing outdated/dangling images and containers”
+sudo docker rmi stu60610/projectName:latest
+# create new image for projectName
+echo “create new image for projectName”
+cd /home/stu60610/projectName
+git pull origin master
+sudo docker build -t=”stu60610/projectName” .
+# restart service which will use the newly pulled image
+echo “restarting projectName service”
+sudo systemctl start projectName.service
+# App is updated!
+echo “projectName successfuly updated!”
+```
+
+> sudo chmod +x deploy.sh
+
+> sh deploy.sh
+
+### drone設定
+
+```yaml
+- name: ssh-deploy
+  when:
+    event: tag
+  image: appleboy/drone-ssh
+  settings:
+    host:
+      from_secret: sshhost
+    username:
+      from_secret: sshname
+    password:
+      from_secret: sshkey
+    port: 22
+    command_timeout: 2m
+    script:
+      - cd /root/temp # or whereever you put your `deploy.sh`
+      - sh deploy.sh
+```
+
+## slack
+
+> 使用slack發送channela
+
+> [link](https://medium.com/@stu60610/%E4%BD%BF%E7%94%A8-docker-drone-%E5%BB%BA%E7%AB%8B%E7%B0%A1%E6%98%93%E8%87%AA%E5%8B%95%E9%83%A8%E7%BD%B2%E6%B5%81%E7%A8%8B-part2-7d250e926bd8)
+
+### 建立webhook
+
+[slack websock](https://my.slack.com/services/new/incoming-webhook)
+
+### yaml
+
+```yaml
+  - name: notify
+    when:
+      event: tag
+    image: plugins/slack
+    settings:
+      webhook: https://hooks.slack.com/services/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
+      channel: drone
+      username: drone
+      template: >
+        {{#success build.status}}
+          build {{build.number}} succeeded. Good job.
+        {{else}}
+          build {{build.number}} failed. Fix me please.
+        {{/success}}
+```
+
 
 ## secret
 
@@ -225,6 +336,10 @@ drone secret add \
 > github 目標 repo >settings >Webhooks
 
 檢查 url 是否正確
+
+> 若webhooks錯誤
+
+在drone介面內重新enable
 
 ### 參考連結
 
