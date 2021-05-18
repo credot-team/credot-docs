@@ -7,6 +7,7 @@ sidebar_position: 2
 
 [link](https://caddyserver.com/docs/getting-started)
 [placeholders](https://caddyserver.com/docs/conventions#placeholders)
+[v1-v2](https://caddyserver.com/docs/v2-upgrade)
 
 ```
 caddy start // 背景執行

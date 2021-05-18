@@ -134,15 +134,15 @@ type: docker #在docker環境中執行
 name: test #自定義pipleline名稱
 
 steps: #工作列表
-  - name: tsc
-    when:
-      event: tag
-    pull: if-not-exists #要不要pull指定的image
-    image: node:current-alpine3.12
-    commands: # 需執行的指令
-      - yarn global add typescript
-      - yarn install
-      - yarn bundle
+  # - name: tsc
+  #   when:
+  #     event: tag
+  #   pull: if-not-exists #要不要pull指定的image
+  #   image: node:current-alpine3.12
+  #   commands: # 需執行的指令
+  #     - yarn global add typescript
+  #     - yarn install
+  #     - yarn bundle
 
   - name: build-image #自訂工作名稱
     when:
@@ -161,6 +161,23 @@ steps: #工作列表
       tags:
         - latest
         - ${DRONE_TAG}
+
+  - name: ssh-deploy ## 使用ssh遠端執行部署
+    when:
+      event: tag
+    image: appleboy/drone-ssh
+    settings:
+      host:
+        from_secret: sshhost
+      username:
+        from_secret: sshname
+      password:
+        from_secret: sshkey
+      port: 22
+      command_timeout: 2m
+      script:
+        - cd /root/temp # or whereever you put your `deploy.sh`
+        - sh deploy.sh
 ```
 
 ### dockerfile
@@ -168,10 +185,20 @@ steps: #工作列表
 ```dockerfile
 FROM node:current-alpine3.12
 RUN mkdir /src
-COPY dist /src
 COPY .env /src
+COPY cfg /src/cfg
+COPY src /src/src
+COPY webpack.config.js /src
+COPY tsconfig.json /src
+COPY package.json /src
+COPY public /src/public
 WORKDIR /src
-CMD ["node","-r","dotenv/config","/src/index.min.js"]
+RUN yarn install
+RUN yarn global add typescript
+RUN yarn global add webpack
+RUN yarn global add webpack-cli
+RUN tsc && webpack
+CMD ["node","dist/index.min.js"]
 ```
 
 ### 對commit下tag
@@ -182,52 +209,28 @@ CMD ["node","-r","dotenv/config","/src/index.min.js"]
 
 > 自動部署
 
-### service
-
-> sudo vim /etc/systemd/system/projectName.service
-
-- projectName: amber
-
-```
-[Unit]
-Description=projectName Container
-Requires=docker.service
-After=docker.service
-[Service]
-Restart=always
-ExecStart=/usr/bin/docker run --name=projectName -p 3000:3000 stu60610/projectName
-ExecStop=/usr/bin/docker stop -t 2 projectName
-ExecStopPost=/usr/bin/docker rm -f projectName
-[Install]
-WantedBy=default.target
-```
-
-> systemctl daemon-reload
-
-> systemctl enable projectName.service
-
 ### script
 
 > vim deploy.sh
 
 ```sh
 #!/bin/bash
-echo “Updating staging Server”
-echo “stopping projectName.service”
-sudo systemctl stop projectName.service
+echo "Updating staging Server"
+echo "stopping amber.service"
+#sudo systemctl stop amber.service
+docker stop amber
+docker rm amber
 # remove all outdated images and containers
-echo “removing outdated/dangling images and containers”
-sudo docker rmi stu60610/projectName:latest
+echo "removing outdated/dangling images and containers"
+sudo docker rmi skynocover/amber-server:latest
 # create new image for projectName
-echo “create new image for projectName”
-cd /home/stu60610/projectName
-git pull origin master
-sudo docker build -t=”stu60610/projectName” .
+echo "create new image for amber"
+sudo docker pull skynocover/amber-server:latest
 # restart service which will use the newly pulled image
-echo “restarting projectName service”
-sudo systemctl start projectName.service
+echo "restarting amber service"
+sudo docker run --name=amber -p 3001:3001 -d skynocover/amber-server:latest
 # App is updated!
-echo “projectName successfuly updated!”
+echo "amber successfuly updated!"
 ```
 
 > sudo chmod +x deploy.sh
