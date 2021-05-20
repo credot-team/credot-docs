@@ -126,13 +126,13 @@ curl localhost:2019/load \
 
 ## patterns
 
-[linkt](https://caddyserver.com/docs/caddyfile/patterns)
+[link](https://caddyserver.com/docs/caddyfile/patterns)
 
 ### static file
 
 ```
 example.com
-gzip # 表示使用gzip壓縮
+encode gzip # 表示使用gzip壓縮
 root * /var/www
 file_server
 ```
@@ -141,8 +141,8 @@ or
 
 ```
 yourdomain.com {      # 填寫網域才會自動產生 SSL 憑證，如果不寫port會同時開80跟443
-    root /home/www    # 網站根目錄
-    gzip              # 網頁壓縮
+    root * /home/www    # 網站根目錄
+    encode gzip              # 網頁壓縮
     header /assets {  # 加入檔頭，指定 assets 路徑下
       Cache-Control "max-age=604800"   # 控制瀏覽器快取，壽命一週
     }
@@ -176,5 +176,5 @@ file_server
 ### load balance
 
 ```
-proxy / web1.local:80 web2.local:90 web3.local:100
+reverse_proxy / web1.local:80 web2.local:90 web3.local:100
 ```
