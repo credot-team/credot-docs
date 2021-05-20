@@ -1,47 +1,26 @@
 ---
-title: CICD
+title: setting
+sidebar_position: 1
 ---
 
 
-## ngrok
+## domain
 
-> https://dashboard.ngrok.com
+- ngrok
+- caddy
 
-> [ubuntu intall link](https://snapcraft.io/install/ngrok/ubuntu)
+### caddy
 
-### intall
-
-```
-sudo snap install ngrok
-```
-
-
-
-### forwarding
-
-> ngrok http 8081
-
-得到網址
-
-```
-Session Status                online
-Account                       EricWu (Plan: Free)
-Version                       2.3.35
-Region                        United States (us)
-Web Interface                 http://127.0.0.1:4040
-Forwarding                    http://524c5b23a4f8.ngrok.io -> http://localhost:8081
-Forwarding                    https://524c5b23a4f8.ngrok.io -> http://localhost:8081
-
-Connections                   ttl     opn     rt1     rt5     p50     p90
-                              0       0       0.00    0.00    0.00    0.00
-```
-
-### connect
-
-- authtoken: 註冊的ngrok的帳號頒發的token
-
-```
-ngrok authtoken 1ndC6jZveOOtfz0TzEFFdiNBuzM_EuRAumdYrAt117huUoFr
+```caddy
+credotcicd.ml:80 {
+    reverse_proxy http://localhost:8080 {
+         header_up Host {http.reverse_proxy.upstream.hostport}
+         header_up X-Real-IP {http.request.remote}
+         header_up X-Forwarded-For {http.request.remote}
+         header_up X-Forwarded-Port {http.request.port}
+         header_up X-Forwarded-Proto {http.request.scheme}
+    }
+}
 ```
 
 ## github
@@ -69,7 +48,7 @@ services:
   drone-server:
     image: drone/drone:latest #指定server為drone最新版
     ports:
-      - 8081:80
+      - 8080:80
     volumes:
       - ./:/data
     restart: always

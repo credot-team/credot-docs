@@ -1,5 +1,5 @@
 ---
-title: confit
+title: config
 sidebar_position: 2
 ---
 

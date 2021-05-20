@@ -1,6 +1,6 @@
 ---
 title: example
-sidebar_position: 3
+sidebar_position: 2
 ---
 
 ## network
@@ -34,24 +34,6 @@ networks:
 ```
 
 ## 後端
-
-### docker-compose
-
-```yaml
-version: '3.1'
-
-services:
-  be:
-    image: credot/pemen_be
-    ports:
-      - 3001:3001
-    restart: always
-
-networks:
-  default:
-    external: true
-    name: docker_db
-```
 
 ### dockerfile
 
@@ -127,20 +109,25 @@ steps: #工作列表
         - docker-compose up -d
 ```
 
-## 前端
-
 ### docker-compose
 
 ```yaml
 version: '3.1'
 
 services:
-  fe:
-    image: credot/pemen_fe
+  be:
+    image: credot/pemen_be
     ports:
-      - 8080:80
+      - 3001:3001
     restart: always
+
+networks:
+  default:
+    external: true
+    name: docker_db
 ```
+
+## 前端
 
 ### dockerfile
 
@@ -166,6 +153,8 @@ CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile
 ```
 
 ### drone
+
+> .drone.yml
 
 ```drone
 kind: pipeline
@@ -209,6 +198,19 @@ steps: #工作列表
         - docker pull credot/pemen_fe
         - docker-compose up -d
 
+```
+
+### docker-compose
+
+```yaml
+version: '3.1'
+
+services:
+  fe:
+    image: credot/pemen_fe
+    ports:
+      - 8080:80
+    restart: always
 ```
 
 ## 服務proxy

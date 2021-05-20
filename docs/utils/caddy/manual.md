@@ -5,8 +5,8 @@ sidebar_position: 2
 
 ## 基本使用
 
-[link](https://caddyserver.com/docs/getting-started)
-[placeholders](https://caddyserver.com/docs/conventions#placeholders)
+[link](https://caddyserver.com/docs/getting-started)  
+[placeholders](https://caddyserver.com/docs/conventions#placeholders)  
 [v1-v2](https://caddyserver.com/docs/v2-upgrade)
 
 ```
