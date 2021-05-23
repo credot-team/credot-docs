@@ -72,6 +72,18 @@ networks:
 
 - GRAYLOG_ROOT_PASSWORD_SHA2: 被 hash 過的密碼
 - GRAYLOG_HTTP_EXTERNAL_URI: 設定外部 url 避免跨域
+- [設定Input](https://docs.graylog.org/en/4.0/pages/installation/docker.html#how-to-get-log-data-in)
+
+### version
 
 - [elasticsearch-oss-version](https://www.docker.elastic.co/r/elasticsearch/elasticsearch-oss)
 - [graylog-version](https://hub.docker.com/r/graylog/graylog/tags?page=1&ordering=last_updated)
+
+## caddy
+
+```caddy
+graylog.credot.ml:80 {
+  reverse_proxy /gelf localhost:12201
+  reverse_proxy localhost:9000
+}
+```
