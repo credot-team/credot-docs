@@ -1,0 +1,236 @@
+---
+title: 配對系統
+sidebar_position: 1
+---
+
+import Mermaid from '@theme/Mermaid';
+
+## 版本
+
+MatchingSystem v0.0.0 (2021-05-24)
+
+## 說明
+
+配對系統是一個泛用性極高的服務，日後會把此服務作為微服務並部署在雲端，並讓其他服務對它操作
+
+許多應用程式中都會有配對系統這個服務，舉凡隨機聊天室、隨機視訊、遊戲房間、媒合服務等等...
+
+而其中即時配對系統又是更常使用的服務，讓使用者可以即時配對
+
+## 需求
+
+- 以 nodejs 搭配 socket.io 實作
+
+  - socket.io 直接上 v4
+
+- 資料庫以關聯資料庫與 Redis 為主
+
+  - 配對系統考慮到原子操作，所以使用關聯資料庫
+  - 考慮到日後會上雲端，建議使用 postgres 或 mysql
+  - Redis 除了做 cache 外，主要目的是實現微服務中 socket.io 的 Pub/Sub
+    - 可參考 https://socket.io/docs/v4/rooms/ 中 「With multiple Socket.IO servers」的段落
+
+- 需考慮到 scaling 的問題
+
+  - 資料庫應該可交由雲端服務管理
+  - socket.io 則參考 Redis 的 Pub/Sub
+
+- 管理員可在後台設定配對項目與配對規則
+
+  - 配對規則請參閱下方資料欄位的配對規則
+  - 先不用做後台，直接改資料庫測試
+
+- 前台使用者為 firebase user，因此 socket.io 連線時須先驗證 firebase auth token，驗證失敗則立即斷線
+
+- 系統依據資料庫中的配對規則來進行配對
+  - 每筆配對都會是一個 socket.io 的 room，建議 room 的 id 是 cuid
+  - room 狀態需存在資料庫，以便查詢狀態或線下配對
+
+## 流程
+
+### 連線並驗證
+
+<Mermaid
+  chart={`
+graph TD
+  Start[連線開始]
+  VerifyFirebase[驗證firebase auth token]
+  CheckIfVerified{驗證成功}
+  Connect[連線]
+  Disconnect[斷線]
+  KeepConnecting[保持連線直至app或web關閉]
+  Start --> VerifyFirebase --> CheckIfVerified
+  CheckIfVerified -- Yes --> Connect --> KeepConnecting
+  CheckIfVerified -- No --> Disconnect
+`}
+/>
+
+### 加入房間
+
+<Mermaid
+  chart={`
+graph TD
+  SelectRuleId[決定配對ruleId]
+  PrepareDesiredRoomCondition[準備desiredRoomCondition]
+  PrepareDesiredUserCondition[準備desiredUserCondition]
+  PrepareRoomCondition[準備roomCondition]
+  PrepareUserCondition[準備userCondition]
+  SendMatchingRequest[送出配對請求]
+  FindRooms[尋找ruleId相同 public=true status=pending的房間]
+  CheckFoundRooms{尋找成功}
+  CheckThroughFoundRooms[遍歷各個房間]
+  CreateMatchingRoom[創建配對房間]
+  UseRoomCondition[代入roomCondition]
+  UseUserCondition[代入userCondition]
+  WaitMatching[等待配對]
+  GetRuleFromTable[藉由配對規則表找出roomMatchingRule]
+  CheckIfRoomMatchingRuleNull{roomMatchingRule==null}
+  CheckIfUserMatchingRuleNull{userMatchingRule==null}
+  CheckIfRoomMatched{檢查房間配對}
+  CheckIfUserMatched{一一檢查使用者配對}
+  MatchingCompleted[完成配對加入房間]
+  SelectRuleId --> PrepareDesiredRoomCondition --> PrepareDesiredUserCondition --> PrepareRoomCondition --> PrepareUserCondition --> SendMatchingRequest
+  SendMatchingRequest --> FindRooms --> CheckFoundRooms
+  CheckFoundRooms --> No --> CreateMatchingRoom --> UseRoomCondition --> UseUserCondition --> WaitMatching
+  CheckFoundRooms --> Yes --> CheckThroughFoundRooms --> GetRuleFromTable --> CheckIfRoomMatchingRuleNull
+  CheckIfRoomMatchingRuleNull -- Yes --> CheckIfUserMatchingRuleNull
+  CheckIfRoomMatchingRuleNull -- No --> CheckIfRoomMatched
+  CheckIfRoomMatched -- Yes --> CheckIfUserMatchingRuleNull
+  CheckIfRoomMatched -- No --> CheckThroughFoundRooms
+  CheckIfUserMatchingRuleNull -- Yes --> MatchingCompleted
+  CheckIfUserMatchingRuleNull -- No --> CheckIfUserMatched
+  CheckIfUserMatched -- Yes --> MatchingCompleted
+  CheckIfUserMatched -- No --> CheckThroughFoundRooms
+`}
+/>
+
+### 退出房間
+
+<Mermaid
+  chart={`
+graph TD
+  id[送出退出房間指令]
+`}
+/>
+
+### 自動完成配對
+
+<Mermaid
+  chart={`
+graph TD
+  id[到達房間人數上限自動完成配對]
+`}
+/>
+
+### 手動完成配對
+
+<Mermaid
+  chart={`
+graph TD
+  id[使用者為holder且人數大於等於房間人數下限]
+`}
+/>
+
+### 使用房間 id 進入房間
+
+### 進入不公開房間
+
+## 資料欄位
+
+### 配對規則
+
+| key                            | type             | desc               | example          |
+| ------------------------------ | ---------------- | ------------------ | ---------------- |
+| id                             | `string`         | 配對規則 id        | `RANDOM_CHAT`    |
+| minUserCount                   | `number`         | 配對人數下限       | `2`              |
+| maxUserCount                   | `number`         | 配對人數上限       | `2`              |
+| cancelMatchingWhenDisconnected | `boolean`        | 斷線時結束配對     | `true`           |
+| deleteRoomWhenAllDisconnected  | `boolean`        | 全員斷線時刪除房間 | `false`          |
+| pendingMaxAge                  | `number`         | 配對最長時間 (s)   | `60 * 60 * 1000` |
+| roomMatchingRule               | `JSON` \| `null` | 房間配對規則       | 請參考下方       |
+| userMatchingRule               | `JSON` \| `null` | 使用者配對規則     | 請參考下方       |
+
+```json
+// operators
+// eq : equal
+// ne : not equal
+// gt : greater than
+// gte : greater than or equal
+// lt : less than
+// lte : less than or equal
+// between : between
+// notbetween : not between
+// in : in an array
+// notin : not in an array
+{
+  "gender": "in",
+  "age": "between",
+  "city": "in"
+}
+```
+
+### 房間
+
+| key            | type                         | desc               | example                     |
+| -------------- | ---------------------------- | ------------------ | --------------------------- |
+| id             | `string`                     | 房間 id            | `ckp26qc8w000201mlcvzmgw9d` |
+| ruleId         | `string`                     | 配對規則 id        | `RANDOM_CHAT`               |
+| holder         | `string`                     | 持有者 id          | `user01`                    |
+| roomCondition  | `JSON`                       | 房間配對條件       | `{ "city": "Taipei" }`      |
+| public         | `boolean`                    | 是否公開           | `true`                      |
+| status         | `"pending"` \| `"completed"` | 配對狀態           | `pending`                   |
+| pendingExpired | `timestamp`                  | 未配對房間過期時間 | `2021-05-24T12:00:00.000Z`  |
+| createdAt      | `timestamp`                  | 創建時間           | `2021-05-24T06:12:30.089Z`  |
+| updatedAt      | `timestamp`                  | 更新時間           | `2021-05-24T06:12:30.089Z`  |
+| deletedAt      | `timestamp` \| `null`        | 刪除時間           | `null`                      |
+
+### 關聯: 使用者-房間
+
+| key                  | type        | desc               | example                                     |
+| -------------------- | ----------- | ------------------ | ------------------------------------------- |
+| uid                  | `string`    | 使用者 id          | `user01`                                    |
+| roomId               | `string`    | 房間 id            | `ckp26qc8w000201mlcvzmgw9d`                 |
+| userCondition        | `JSON`      | 使用者自身配對條件 | `{ "gender": "male", "age": 25 }`           |
+| desiredUserCondition | `JSON`      | 使用者預期配對條件 | `{ "gender": ["female"], "age": [18, 30] }` |
+| createdAt            | `timestamp` | 創建時間           | `2021-05-24T06:12:30.089Z`                  |
+
+### 配對範例
+
+| rule |     |     |
+| ---- | --- | --- |
+|      |     |     |
+|      |     |     |
+
+## 使用情境
+
+| 情境                           | 隨機聊天          | 遊戲配對  |
+| ------------------------------ | ----------------- | --------- |
+| minUserCount                   | `2`               | `4`       |
+| maxUserCount                   | `2`               | `8`       |
+| cancelMatchingWhenDisconnected | `true` or `false` | `true`    |
+| deleteRoomWhenAllDisconnected  | `false`           | `true`    |
+| roomMatchingRule               | `null`            | `{ ... }` |
+| userMatchingRule               | `{ ... }`         | `null`    |
+
+## Api
+
+| method | endpoint                  | desc |
+| ------ | ------------------------- | ---- |
+| GET    | `/api/user/:id/rooms`     |      |
+| GET    | `/api/user/:id/rooms/:id` |      |
+
+## Socket.io Event
+
+| event               | params | desc |
+| ------------------- | ------ | ---- |
+| `matchingCompleted` |        |      |
+
+## 待討論
+
+- 是否有需要使用 socket.io，還是 polling？
+
+- 同一個使用者使用不同裝置同時連線的解決方式？
+
+## 參考資料
+
+- https://socket.io/docs/v4/server-api/

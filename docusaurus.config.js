@@ -24,16 +24,6 @@ module.exports = {
           docId: 'intro',
         },
         {
-          to: 'flow',
-          label: '專案流程',
-          position: 'left',
-        },
-        {
-          to: 'ideas',
-          label: '點子',
-          position: 'left',
-        },
-        {
           to: 'blog',
           label: '部落格',
           position: 'left',
