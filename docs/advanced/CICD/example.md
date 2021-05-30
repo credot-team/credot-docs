@@ -66,7 +66,7 @@ CMD ["dumb-init", "yarn", "createDB"]
 
 > .drone.yml
 
-```drone
+```yaml
 kind: pipeline
 type: docker #在docker環境中執行
 name: test #自定義pipleline名稱
@@ -89,7 +89,7 @@ steps: #工作列表
         - latest
         - ${DRONE_TAG}
 
-  - name: ssh-deploy
+   - name: ssh-deploy
     when:
       event: tag
     image: appleboy/drone-ssh
@@ -98,15 +98,17 @@ steps: #工作列表
         from_secret: sshhost
       username:
         from_secret: sshname
-      password:
+      key: #使用sshkey登入
         from_secret: sshkey
       port: 22
       command_timeout: 2m
       script:
-        - cd /root/be
-        - docker-compose down
-        - docker pull credot/pemen_be
-        - docker-compose up -d
+        - sudo docker stop amber-server
+        - sudo docker rm amber-server
+        - sudo docker rmi amber-server 
+        - sudo docker pull skynocover/amber-server
+        - sudo docker run -d -p 3001:3001 --network=db_net --env DBName=amber --env DBUser=postgres --env DBPw=a123456 --env DBHost=postgres --name=amber-server skynocover/amber-server
+
 ```
 
 ### docker-compose
@@ -156,7 +158,7 @@ CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile
 
 > .drone.yml
 
-```drone
+```yaml
 kind: pipeline
 type: docker #在docker環境中執行
 name: test #自定義pipleline名稱
@@ -188,12 +190,12 @@ steps: #工作列表
         from_secret: sshhost
       username:
         from_secret: sshname
-      password:
+      password: #使用password登入
         from_secret: sshkey
       port: 22
       command_timeout: 2m
       script:
-        - cd /root/fe # or whereever you put your `deploy.sh`
+        - cd /root/fe
         - docker-compose down
         - docker pull credot/pemen_fe
         - docker-compose up -d
