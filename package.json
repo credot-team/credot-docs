@@ -18,11 +18,13 @@
     "@docusaurus/core": "2.0.0-alpha.73",
     "@docusaurus/preset-classic": "2.0.0-alpha.73",
     "@mdx-js/react": "^1.6.22",
+    "@react-three/fiber": "^6.2.2",
     "clsx": "^1.1.1",
     "mermaid": "^8.9.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-graph-vis": "^1.0.7"
+    "react-graph-vis": "^1.0.7",
+    "three": "^0.129.0"
   },
   "browserslist": {
     "production": [

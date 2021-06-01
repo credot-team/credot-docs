@@ -1,11 +1,7 @@
 import React from 'react';
-import Layout from '@theme/Layout';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Graph from 'react-graph-vis';
 
 export default () => {
-  const { siteConfig } = useDocusaurusContext();
-
   const graph = {
     nodes: [
       { id: '新產品', label: '新產品', color: '#F87171' },
@@ -67,7 +63,7 @@ export default () => {
 
   const options = {
     autoResize: true,
-    height: '900px',
+    height: '500px',
     nodes: {
       shape: 'dot',
       size: 8,
@@ -82,12 +78,5 @@ export default () => {
     },
   };
 
-  return (
-    <Layout
-      title={`點子 | ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />"
-    >
-      <Graph graph={graph} options={options} />
-    </Layout>
-  );
+  return <Graph graph={graph} options={options} />;
 };
