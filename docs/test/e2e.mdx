@@ -1,0 +1,63 @@
+---
+title: E2E 測試
+sidebar_position: 4
+---
+
+## 設定 package.json
+
+```json title="package.json"
+{
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.15",
+    "jest": "^27.0.3",
+    "puppeteer": "^10.0.0"
+  }
+}
+```
+
+## 實作測試文件
+
+```tsx title="__tests__/e2e.test.tsx"
+// 測試情境
+// 操作 Google 網頁搜尋流程
+import puppeteer from 'puppeteer';
+
+describe('Test Google', () => {
+  let browser: puppeteer.Browser;
+  let page: puppeteer.Page;
+
+  beforeAll(async () => {
+    browser = await puppeteer.launch({ headless: false });
+    page = await browser.newPage();
+    await page.setViewport({
+      width: 1920,
+      height: 1080,
+      deviceScaleFactor: 1,
+    });
+    await page.goto('https://google.com');
+  });
+
+  afterAll(async () => {
+    await browser.close();
+  });
+
+  test('Open Google and search cat', async () => {
+    await page.type('input[title="Google 搜尋"]', 'cat', { delay: 100 });
+
+    await (await page.$('input[title="Google 搜尋"]'))?.press('Enter');
+
+    await page.waitForTimeout(3000);
+
+    await page.screenshot({ path: 'example.png' });
+  });
+});
+```
+
+## 執行測試
+
+```bash
+yarn test
+```
