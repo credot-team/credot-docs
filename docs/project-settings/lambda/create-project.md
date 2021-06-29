@@ -17,7 +17,7 @@ sidebar_position: 1
 ## dynamoDB串流
 
 - [link](https://docs.aws.amazon.com/zh_tw/lambda/latest/dg/with-ddb-example.html)
-
+- [DynamoDB Write](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/dynamodb-example-table-read-write-batch.html)
 ## SAM
 
 - AWS Serverless Application Model (AWS SAM)
