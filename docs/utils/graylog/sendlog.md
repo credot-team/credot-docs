@@ -8,39 +8,22 @@ sidebar_position: 2
 - [gelf 協定](https://docs.fluentbit.io/manual/pipeline/outputs/gelf)
 - [log-level 1~7](https://en.wikipedia.org/wiki/Syslog#cite_note-opengroupSyslog-8)
 
-## api
+
+## credotlog
+
+```
+git add https://github.com/credot-team/credotlog.git --force
+```
+
+### How to use
 
 ```js
-export const emerg = 0; // A panic condition.
-export const alert = 1; // A condition that should be corrected immediately, such as a corrupted system database.
-export const crit = 2; // Hard device errors.
-export const err = 3;
-export const warning = 4;
-export const notice = 5; // Conditions that are not error conditions, but that may require special handling.
-export const info = 6;
-export const debug = 7; // only when debugging a program.
+import * as credotlog from 'credotlog';
 
-const host = 'peman';
-const graylogURL = 'http://localhost:12201/gelf';
+credotlog.init('https', 'graylog.credot.ml', 'peman'); // 必要的初始化, 參數: protocol, grayloghost, source
 
-export const log = async (
-  level: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7,
-  message: string,
-  others?: object,
-) => {
-  let body = {
-    host, // 用來給source查詢用名稱
-    level, // 用來顯示訊息層級
-    short_message: message,
-    ...others,
-  };
-  try {
-    let result = await axios.post(graylogURL, body);
-    if (result.status !== 202) {
-      console.log('send graylog fail, error: ', result.config.data);
-    }
-  } catch (error) {
-    console.log('send graylog fail, error: ', error);
-  }
-};
+credotlog.log('Info', `${user.name}`); // 發送訊息到Graylog
+credotlog.colorlog('message','debug') // 在本地端印出有顏色的訊息
+credotlog.levellog('message',0) // 在本地端印出根據等級區分顏色的訊息
+
 ```
