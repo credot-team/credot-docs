@@ -3,6 +3,44 @@ title: 環境設定
 sidebar_position: 1
 ---
 
+## package.json
+
+```json
+{
+  "name": "projectName",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon src/index.ts",
+    "bundle": "tsc && webpack",
+    "migrate": "prisma migrate dev",
+    "migrate-deploy": "prisma migrate deploy",
+    "seed": "prisma db seed --preview-feature",
+    "studio": "prisma studio",
+    "generate": "npx prisma generate",
+    "prisma-format": "prisma format",
+    "test": "jest --bail"
+  },
+  "dependencies": {
+    "apollo-server-express": "^2.23.0",
+    "credotlog": "https://github.com/credot-team/credotlog.git",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "morgan": "^1.10.0",
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.1",
+    "@types/express-session": "^1.17.3",
+    "nodemon": "^2.0.7",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4",
+    "webpack": "^5.20.2",
+    "webpack-cli": "^4.5.0"
+  }
+}
+```
+
 ## prettierrc
 
 ### 設定

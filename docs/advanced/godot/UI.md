@@ -9,7 +9,6 @@ sidebar_position: 3
 2. 如果框框的周圍有內邊距，則使用 MarginContainer 。
 3. 如果元素是使用行或列來排列的，則使用 HBoxContainer 或 VBoxContainer 。
 
-
 ## Container
 
 >  Container 是 回應式
@@ -19,7 +18,7 @@ sidebar_position: 3
 - VboxContainer 與 HboxContainer，垂直框容器與水平框容器，用來以行或列排列 UI 元素
 - GridContainer，柵欄容器，用來以類似柵欄系統的方式排列 Control 節點
 
-- BoxContainer: 屬於 Helper 類別，所以 BoxContainer 無法直接使用,請使用Vbox以及Hbox
+- BoxContainer: 屬於 Helper 類別, 所以 BoxContainer 無法直接使用, 請使用Vbox以及Hbox
 - HSplitContainer: 將區塊分成左右或上下
 - HBoxContainer: 有幾個節點就切成幾列
 
@@ -42,7 +41,6 @@ sidebar_position: 3
 ### VBoxContainer
 
 - Custom Constants/Separation: 表內部元素之間的分隔
-
 
 ## Control節點 主屬性
 
