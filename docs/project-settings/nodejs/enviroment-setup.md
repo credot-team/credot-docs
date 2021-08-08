@@ -32,6 +32,7 @@ sidebar_position: 1
   "devDependencies": {
     "@types/express": "^4.17.1",
     "@types/express-session": "^1.17.3",
+    "@types/morgan": "^1.9.3",
     "nodemon": "^2.0.7",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.4",
@@ -100,6 +101,33 @@ sidebar_position: 1
     "src"
   ]
 }
+```
+
+## index.ts
+
+```ts
+import 'dotenv/config';
+
+import path from 'path';
+import express, { Request, Response, NextFunction } from 'express';
+import morgan from 'morgan';
+
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan('dev'));
+
+app.get('/api/version', (req, res) => {
+  res.json({ env: process.env.NODE_ENV, version: process.env.VERSION });
+});
+
+app.listen(process.env.PORT, () => {
+  console.log(new Date(), `env: ${process.env.NODE_ENV}`);
+  console.log(new Date(), `version: ${process.env.VERSION}`);
+  console.log(new Date(), `server listening on ${process.env.PORT}`);
+});
+
 ```
 
 ## nodemon

@@ -20,6 +20,35 @@ sidebar_position: 1
 - 抓取GCSR的docker image
 - 連結github使用github的專案(具有CICD功能)
 
+> cloudbuild.yaml
+
+[build.yaml](https://cloud.google.com/build/docs/deploying-builds/deploy-cloud-run#cloud-run_2)
+
+```yaml
+steps:
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/ambermqtt:$COMMIT_SHA', '.']
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/ambermqtt:$COMMIT_SHA']
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+  - 'run'
+  - 'deploy'
+  - 'ambermqtt'
+  - '--image'
+  - 'gcr.io/$PROJECT_ID/ambermqtt:$COMMIT_SHA'
+  - '--region'
+  - 'asia-east1'
+  - '--platform'
+  - 'managed'
+images:
+- 'gcr.io/$PROJECT_ID/ambermqtt:$COMMIT_SHA'
+```
+
 ## 使用SDK設定
 
 ### install SDK
