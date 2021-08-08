@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[60],{127:function(o){o.exports=JSON.parse('{"allTagsPath":"/credot-docs/blog/tags","slug":"hello","name":"hello","count":1,"permalink":"/credot-docs/blog/tags/hello"}')}}]);
