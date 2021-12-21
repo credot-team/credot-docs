@@ -1,25 +1,9 @@
 ---
-title: model
+title: modelApi
 sidebar_position: 1
 ---
 
-- [api](#api)
-  - [end point](#end-point)
-    - [collection type](#collection-type)
-    - [single type](#single-type)
-  - [params](#params)
-    - [sort](#sort)
-    - [filters](#filters)
-    - [populate](#populate)
-    - [取得一層全部關聯資料](#取得一層全部關聯資料)
-    - [取得某項關聯](#取得某項關聯)
-    - [多層關聯](#多層關聯)
-    - [fields](#fields)
-    - [pagination](#pagination)
-    - [publicationState](#publicationstate)
-    - [locale](#locale)
-
-# api
+# model api
 
 > https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/rest-api.html
 
@@ -79,7 +63,7 @@ sidebar_position: 1
 
 > 關聯資料
 
-### 取得一層全部關聯資料
+#### 取得一層全部關聯資料
 
 - /api/orders?populate=\*
 
@@ -107,16 +91,6 @@ sidebar_position: 1
             }
           }
         },
-        "order_type": {
-          "data": {
-            "id": 1,
-            "attributes": {
-              "name": "custom",
-              "createdAt": "2021-12-10T03:37:21.457Z",
-              "updatedAt": "2021-12-10T03:37:23.971Z"
-            }
-          }
-        },
         "users_permissions_user": {
           "data": {
             "id": 1,
@@ -137,7 +111,7 @@ sidebar_position: 1
 }
 ```
 
-### 取得某項關聯
+#### 取得某項關聯
 
 - /api/orders?populate[0]=room
 
@@ -171,7 +145,7 @@ sidebar_position: 1
 }
 ```
 
-### 多層關聯
+#### 多層關聯
 
 - /api/orders?populate[users_permissions_user][populate]=role
 
