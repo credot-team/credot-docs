@@ -29,6 +29,8 @@ sidebar_position: 1
 
 ## params
 
+> 可使用[工具](https://skynocover.github.io/qs-parser/)來組Query String
+
 - [sort](#sort)
 - [filters](#filters)
 - [populate](#populate)
